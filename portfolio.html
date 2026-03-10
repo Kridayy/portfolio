@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kriday Kukreja — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --card: #16161f;
+      --border: rgba(255,255,255,0.07);
+      --accent: #00e5c8;
+      --accent2: #7b6fff;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-display);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      background: rgba(10,10,15,0.7);
+    }
+
+    .nav-logo {
+      font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+
+    .nav-links { display: flex; gap: 2.2rem; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--muted); text-decoration: none; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 6rem 3rem 4rem;
+      position: relative;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1; overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute; top: -20%; left: 50%;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,200,0.07) 0%, transparent 70%);
+      transform: translateX(-50%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; bottom: 0; right: -10%;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,111,255,0.06) 0%, transparent 70%);
+    }
+
+    .hero-inner { max-width: 1100px; width: 100%; }
+
+    .hero-tag {
+      font-family: var(--font-mono); font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.6rem;
+      opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+    }
+    .hero-tag::before {
+      content: '';
+      display: inline-block; width: 30px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-name {
+      font-size: clamp(3.5rem, 8vw, 7.5rem);
+      font-weight: 800; line-height: 0.95;
+      letter-spacing: -0.04em;
+      opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
+    }
+
+    .hero-name .line2 {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--text);
+    }
+
+    .hero-sub {
+      font-family: var(--font-mono); font-size: 1rem;
+      color: var(--muted); margin-top: 1.8rem; max-width: 480px;
+      line-height: 1.7;
+      opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+    }
+
+    .hero-cta {
+      display: flex; gap: 1rem; margin-top: 2.8rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.7s 0.65s forwards;
+    }
+
+    .btn {
+      font-family: var(--font-mono); font-size: 0.8rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.8rem 1.8rem; border-radius: 2px;
+      text-decoration: none; transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent); color: #000; border: none;
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: #00ffdc; transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 3rem;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: var(--muted); letter-spacing: 0.1em;
+      display: flex; align-items: center; gap: 0.6rem;
+      opacity: 0; animation: fadeUp 0.7s 0.9s forwards;
+    }
+    .hero-scroll::after {
+      content: '';
+      display: block; width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 3rem; position: relative; }
+
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      margin-bottom: 3.5rem; line-height: 1;
+    }
+
+    .max-w { max-width: 1100px; margin: 0 auto; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--surface); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+    }
+
+    .skill-item {
+      padding: 1.6rem 1.4rem;
+      background: var(--card);
+      display: flex; flex-direction: column; gap: 0.6rem;
+      transition: background 0.2s;
+      cursor: default;
+    }
+    .skill-item:hover { background: rgba(0,229,200,0.05); }
+
+    .skill-icon {
+      font-size: 1.4rem; margin-bottom: 0.3rem;
+    }
+
+    .skill-name {
+      font-size: 1rem; font-weight: 700;
+    }
+
+    .skill-type {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      color: var(--muted); letter-spacing: 0.05em;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .project-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-empty {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 200px; text-align: center;
+      border: 1.5px dashed rgba(0,229,200,0.2);
+      background: rgba(0,229,200,0.02);
+      gap: 0.8rem;
+    }
+
+    .project-empty .plus {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid rgba(0,229,200,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: var(--accent);
+    }
+
+    .project-empty p {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--muted); letter-spacing: 0.05em;
+    }
+
+    /* ── CERTIFICATIONS ── */
+    #certifications { background: var(--surface); }
+
+    .cert-card {
+      display: flex; align-items: flex-start; gap: 1.5rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 2rem 2.2rem;
+      max-width: 600px;
+      transition: border-color 0.3s;
+    }
+    .cert-card:hover { border-color: var(--accent2); }
+
+    .cert-badge {
+      width: 48px; height: 48px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(123,111,255,0.2), rgba(0,229,200,0.2));
+      border: 1px solid rgba(123,111,255,0.3);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .cert-body {}
+    .cert-name {
+      font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem;
+    }
+    .cert-org {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--accent2); letter-spacing: 0.05em;
+    }
+    .cert-desc {
+      font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.6;
+    }
+
+    /* ── CONTACT ── */
+    #contact { text-align: center; }
+
+    .contact-big {
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      font-weight: 800; letter-spacing: -0.04em;
+      line-height: 1.05; margin-bottom: 1.5rem;
+    }
+
+    .contact-big span {
+      color: var(--accent);
+    }
+
+    .contact-links {
+      display: flex; justify-content: center;
+      flex-wrap: wrap; gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    .contact-link {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-mono); font-size: 0.8rem;
+      color: var(--muted); text-decoration: none;
+      letter-spacing: 0.05em;
+      padding: 0.7rem 1.4rem;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    .contact-link svg {
+      width: 16px; height: 16px; fill: currentColor;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 6rem 1.5rem 4rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">KK</div>
+    <div class="nav-links">
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#certifications">Certs</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">B.Tech CSE · 3rd Year</div>
+      <h1 class="hero-name">
+        <span class="line1">Kriday</span><br>
+        <span class="line2">Kukreja</span>
+      </h1>
+      <p class="hero-sub">
+        Computer Science student building at the intersection of code and curiosity.<br>
+        Passionate about deep learning & crafting software.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="max-w">
+      <div class="section-label reveal">Technical Skills</div>
+      <h2 class="section-title reveal">What I Work With</h2>
+      <div class="skills-grid reveal">
+
+        <div class="skill-item">
+          <div class="skill-icon">🐍</div>
+          <div class="skill-name">Python</div>
+          <div class="skill-type">Language</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">⚙️</div>
+          <div class="skill-name">C</div>
+          <div class="skill-type">Language</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🔷</div>
+          <div class="skill-name">C++</div>
+          <div class="skill-type">Language</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">☕</div>
+          <div class="skill-name">Java</div>
+          <div class="skill-type">Language</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🌐</div>
+          <div class="skill-name">HTML</div>
+          <div class="skill-type">Web</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🎨</div>
+          <div class="skill-name">CSS</div>
+          <div class="skill-type">Web</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🗄️</div>
+          <div class="skill-name">MySQL</div>
+          <div class="skill-type">Database</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="max-w">
+      <div class="section-label reveal">Portfolio</div>
+      <h2 class="section-title reveal">Projects</h2>
+      <div class="projects-grid">
+
+        <!-- Empty Slot 1 -->
+        <div class="project-card project-empty reveal">
+          <div class="plus">+</div>
+          <p>Project coming soon</p>
+        </div>
+
+        <!-- Empty Slot 2 -->
+        <div class="project-card project-empty reveal">
+          <div class="plus">+</div>
+          <p>Project coming soon</p>
+        </div>
+
+        <!-- Empty Slot 3 -->
+        <div class="project-card project-empty reveal">
+          <div class="plus">+</div>
+          <p>Project coming soon</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="max-w">
+      <div class="section-label reveal">Achievements</div>
+      <h2 class="section-title reveal">Certifications</h2>
+      <div class="cert-card reveal">
+        <div class="cert-badge">🤖</div>
+        <div class="cert-body">
+          <div class="cert-name">Fundamentals of Deep Learning</div>
+          <div class="cert-org">NVIDIA · Deep Learning Institute</div>
+          <div class="cert-desc">
+            Covers neural network foundations, training deep learning models, and practical applications of AI using industry tools and frameworks.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="max-w">
+      <div class="section-label reveal" style="text-align:center;">Let's Connect</div>
+      <div class="contact-big reveal">
+        Get in <span>Touch</span>
+      </div>
+      <p class="reveal" style="font-family: var(--font-mono); color: var(--muted); font-size: 0.85rem; max-width:420px; margin: 0 auto; line-height:1.7;">
+        Open to internships, collaborations, and interesting conversations. Feel free to reach out!
+      </p>
+      <div class="contact-links reveal">
+
+        <a href="mailto:kridaykukreja@gmail.com" class="contact-link">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          kridaykukreja@gmail.com
+        </a>
+
+        <a href="https://www.linkedin.com/in/kriday-kukreja-76aa40313" target="_blank" class="contact-link">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+
+        <a href="https://github.com/Kridayy" target="_blank" class="contact-link">
+          <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          GitHub
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Kriday Kukreja</span>
+    <span>B.Tech CSE · 3rd Year</span>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
