@@ -1,0 +1,183 @@
+/* ── Reset & Base ───────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── CSS Variables — Light theme defaults ───────────────── */
+:root {
+  --bg:          #f4f1ec;
+  --surface:     #ffffff;
+  --text:        #1a1714;
+  --text-sub:    #7a736a;
+  --border:      #e2ddd6;
+  --accent:      #c2590a;
+  --shadow:      rgba(0, 0, 0, 0.08);
+  --code-bg:     #ede9e2;
+}
+
+/* ── Dark theme overrides ───────────────────────────────── */
+body.dark {
+  --bg:          #0d0d17;
+  --surface:     #14141f;
+  --text:        #e8e4f0;
+  --text-sub:    #6b6480;
+  --border:      #1e1e2e;
+  --accent:      #a78bfa;
+  --shadow:      rgba(0, 0, 0, 0.5);
+  --code-bg:     #1a1a2a;
+}
+
+/* ── Smooth transition on every themeable property ──────── */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease;
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: 520px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+header {
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--text-sub);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.06em;
+  transition: color 0.45s ease;
+}
+
+/* ── Toggle row ─────────────────────────────────────────── */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  font-family: 'Courier New', monospace;
+  transition: color 0.45s ease;
+  user-select: none;
+}
+
+/* ── Switch component ───────────────────────────────────── */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 64px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  border-radius: 32px;
+  transition: background 0.45s ease, box-shadow 0.45s ease;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.45s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Checked (dark mode) state */
+.switch input:checked + .slider {
+  background: linear-gradient(135deg, #312e6b, #1e1b4b);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.5),
+              0 0 18px rgba(167,139,250,0.25);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(32px);
+  background: #a78bfa;
+}
+
+/* Focus ring for accessibility */
+.switch input:focus-visible + .slider {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ── Card ───────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 36px;
+  box-shadow: 0 8px 32px var(--shadow);
+  transition:
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+
+.card p {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--text-sub);
+  transition: color 0.45s ease;
+}
+
+code {
+  background: var(--code-bg);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  transition: background 0.45s ease, color 0.45s ease;
+}

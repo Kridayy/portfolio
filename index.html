@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dark Mode Toggle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Dark Mode Toggle</h1>
+      <p class="subtitle">Your preference is remembered across visits.</p>
+    </header>
+
+    <div class="toggle-wrapper">
+      <span class="label">☀️ Light</span>
+
+      <label class="switch" aria-label="Toggle dark mode">
+        <input type="checkbox" id="darkToggle" />
+        <span class="slider"></span>
+      </label>
+
+      <span class="label">🌙 Dark</span>
+    </div>
+
+    <div class="card">
+      <h2>Welcome</h2>
+      <p>
+        This minimal app demonstrates how to persist a user's theme
+        preference using <code>localStorage</code>. Toggle the switch above
+        and refresh the page — your choice sticks!
+      </p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
